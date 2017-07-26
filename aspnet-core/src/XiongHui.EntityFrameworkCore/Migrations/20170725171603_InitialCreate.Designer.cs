@@ -12,9 +12,10 @@ using XiongHui.Types;
 namespace XiongHui.Migrations
 {
     [DbContext(typeof(XiongHuiDbContext))]
-    partial class XiongHuiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170725171603_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")

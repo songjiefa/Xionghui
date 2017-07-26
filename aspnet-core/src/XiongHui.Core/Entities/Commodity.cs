@@ -1,13 +1,12 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using Abp.Timing;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using XiongHui.Types;
 
 namespace XiongHui.Entities
 {
-	public class Commodity : Entity, IFullAudited
+	public class Commodity : Entity<long>, IFullAudited
 	{
 		public virtual string BarCode { get; private set; }
 		public virtual string FullName { get; private set; }
@@ -25,7 +24,7 @@ namespace XiongHui.Entities
 		public DateTime? DeletionTime { get; set; }
 		public bool IsDeleted { get; set; }
 
-		public Commodity(
+		protected Commodity(
 			string i_barCode,
 			string i_fullName,
 			Prices i_costPrice,
@@ -41,8 +40,26 @@ namespace XiongHui.Entities
 			WholeSalePrices = i_wholeSalePrice;
 
 			CreatorUserId = i_creatorUserId;
-			CreationTime = DateTime.Now;
+			CreationTime = Clock.Now;
 			IsDeleted = false;
+		}
+
+		public static Commodity Create(
+			string i_barCode,
+			string i_fullName,
+			Prices i_costPrice,
+			Prices i_retailPrice,
+			Prices i_wholeSalePrice,
+			long? i_creatorUserId
+			)
+		{
+			return new Commodity(
+				i_barCode,
+				i_fullName,
+				i_costPrice,
+				i_retailPrice,
+				i_wholeSalePrice,
+				i_creatorUserId);
 		}
 
 		public void Update(
@@ -61,7 +78,7 @@ namespace XiongHui.Entities
 			WholeSalePrices = i_wholeSalePrice;
 
 			LastModifierUserId = i_lastModifierUserId;
-			LastModificationTime = DateTime.Now;
+			LastModificationTime = Clock.Now;
 		}
 
 		public void Delete(
@@ -70,7 +87,7 @@ namespace XiongHui.Entities
 		{
 			IsDeleted = true;
 			DeleterUserId = i_deleteUserId;
-			DeletionTime = DateTime.Now;
+			DeletionTime = Clock.Now;
 		}
 	}
 }
